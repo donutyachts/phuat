@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Partner Hub QA — Run 2026-08-28</title>
+  <link rel="stylesheet" href="../../assets/style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div>
+        <h1>Run — 2026-08-28</h1>
+        <div class="subtitle">Login used: chickhicks@bigcorp.com (Partner Administrator, BigCorp / A-Team)</div>
+      </div>
+    </header>
+
+    <nav class="crumbs"><a href="../../index.html">&larr; All runs</a></nav>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="value">44</div><div class="label">Addressed</div></div>
+      <div class="stat-card"><div class="value">20</div><div class="label">Passed</div></div>
+      <div class="stat-card"><div class="value">0</div><div class="label">Failed</div></div>
+      <div class="stat-card"><div class="value">9</div><div class="label">Partial</div></div>
+      <div class="stat-card"><div class="value">9</div><div class="label">Cannot verify</div></div>
+      <div class="stat-card"><div class="value">6</div><div class="label">N/A this run</div></div>
+    </div>
+
+    <section>
+      <div class="empty-state" style="margin-bottom:1.5rem;">
+        <strong>Scope note:</strong> this is functional/UI testing against a single Partner
+        Administrator login (BigCorp / A-Team, the only Team this partner has) — not a security
+        audit. Modules covered: Teams, Categories, Sub Users, Profiles, Tickets. "Cannot verify"
+        means the environment or login this run couldn't exercise that case (e.g. it needs a
+        second role, a second Team, or backend/Dixa-side processing that doesn't complete
+        instantly) — it is not a failure. See <a href="../../data/test-cases.csv">the full
+        96-case library</a> for everything out of scope this run.
+      </div>
+    </section>
+
+    <section>
+      <h2>Test case evidence</h2>
+
+      <div class="evidence-card" id="TEAM-05">
+        <h3><span class="id-cell">TEAM-05</span> — Add a support contact without an email is rejected</h3>
+        <div class="meta">Module: Teams &middot; Required role: System Administrator / Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>While creating/editing a Team, add a contact (Tier 1, Tier 2, or Additional) with Name/Phone but no Email.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Form blocks saving the contact until Email is provided.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Save contact stayed disabled until an Email value was entered when adding an Additional contact.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Confirms Email is mandatory to create a Team contact, per spec.</div>
+        
+        <div class="media">
+          <img src="evidence/TEAM-05_TEAM-06.gif" alt="TEAM-05 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TEAM-06">
+        <h3><span class="id-cell">TEAM-06</span> — Add multiple Additional Team Contacts with no limit</h3>
+        <div class="meta">Module: Teams &middot; Required role: System Administrator / Administrator / Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Add several Additional Team Contacts to one Team.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>All contacts save with no enforced maximum.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Added two Additional Team Contacts (Jane QA, John Backup) to A-Team; both saved and displayed with the &quot;Add additional contact&quot; option still available.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Confirms no hard limit on the number of Additional contacts.</div>
+        
+        <div class="media">
+          <img src="evidence/TEAM-05_TEAM-06.gif" alt="TEAM-06 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="CAT-06">
+        <h3><span class="id-cell">CAT-06</span> — Selecting Category + Subcategory pre-fills ticket Description template</h3>
+        <div class="meta">Module: Categories &middot; Required role: Any ticket-creating role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open New Ticket. Select a Category and Subcategory that has an associated template.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Description field auto-fills with the pre-formatted template text.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Selecting Category &quot;Hosting&quot; + Subcategory &quot;Migration&quot; auto-filled the ticket Description with a Migration-specific template.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Reconfirmed incidentally during Tickets testing this run (ticket #62). Earlier evidence from before this session&#x27;s context handoff also exists.</div>
+        
+        <div class="media">
+          <img src="evidence/CAT-06.gif" alt="CAT-06 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="CAT-07">
+        <h3><span class="id-cell">CAT-07</span> — Non-Admin roles cannot access Category Management</h3>
+        <div class="meta">Module: Categories &middot; Required role: Partner Administrator / Sub User</div>
+
+        <div class="field-label">Steps</div>
+        <div>Log in as a Partner Admin or Sub User. Attempt to reach Category Management.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Access is blocked / option is not shown.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>No &quot;Category Management&quot; option appeared anywhere in this Partner Administrator&#x27;s navigation across the whole session.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Incidental confirmation, not a dedicated re-test this run. Earlier evidence from before this session&#x27;s context handoff also exists.</div>
+        
+        <div class="media">
+          <img src="evidence/CAT-07.gif" alt="CAT-07 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="SUBU-01">
+        <h3><span class="id-cell">SUBU-01</span> — View Sub Users table (under Partner) renders all documented fields</h3>
+        <div class="meta">Module: Sub Users &middot; Required role: System Administrator / Administrator / Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Expand a Partner row to view Sub Users.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Table shows Name, Email, Requester ID, Role, Access Type, Status, Ability to Escalate, Last Active, Actions.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Sub Users table supports columns Name, Email, Role, Access Level, Status, Can Escalate, Email Verified, 2FA, Last Login, Created, Updated — but no &quot;Requester ID&quot; column exists anywhere.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>FINDING: spec lists Requester ID as a documented Sub Users table field; it isn&#x27;t available even as a hideable column. &quot;Last Active&quot; (spec) vs &quot;Last Login&quot; (UI) is a minor naming mismatch.</div>
+        
+        <div class="media">
+          <img src="evidence/SUBU-01_to_07.gif" alt="SUBU-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="SUBU-02">
+        <h3><span class="id-cell">SUBU-02</span> — Create a Sub User with all required fields</h3>
+        <div class="meta">Module: Sub Users &middot; Required role: Partner Administrator / Administrator / System Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open New Sub User modal. Fill Name, Email, Role, Access Type, Associated Teams, Ability to Escalate. Save.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>User is created; Dixa Requester ID is populated automatically (looked up or created in Dixa) rather than typed manually.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Sub Users are created via an email invitation (magic link), not a direct create form — invite modal only collects Email, Access type, Ability to escalate, and auto-assigned Teams.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>No &quot;Name&quot; or &quot;Role&quot; field at invite time. Could not confirm automatic Dixa Requester ID population because the invited test address never accepted (no inbox access). Sent an invite to qa.subuser1@example.com, confirmed it listed correctly, then cancelled it for cleanup.</div>
+        
+        <div class="media">
+          <img src="evidence/SUBU-01_to_07.gif" alt="SUBU-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="SUBU-03">
+        <h3><span class="id-cell">SUBU-03</span> — Partner Administrator limited to specific Teams can only assign those Teams</h3>
+        <div class="meta">Module: Sub Users &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Log in as a Partner Admin scoped to a subset of Teams. Open New Sub User modal.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Associated Teams list only offers the Teams that Partner Admin has access to.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>BigCorp only has one Team (A-Team); the logged-in Partner Admin already has access to all of it.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>No subset-of-teams scenario exists to exercise. Needs a partner with 2+ teams and a Partner Admin scoped to a subset.</div>
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="SUBU-04">
+        <h3><span class="id-cell">SUBU-04</span> — Assign multiple Teams to a Sub User and edit the selection later</h3>
+        <div class="meta">Module: Sub Users &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Create a Sub User with 2+ Associated Teams. Later, edit and change the selection.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Initial multi-team assignment saves; later edit updates correctly.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Same root cause as SUBU-03 — only one Team exists, and the Invite User modal has no team multi-select (it auto-assigns all teams).</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Multi-team assignment/editing isn&#x27;t exercisable with a single-team partner.</div>
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="SUBU-05">
+        <h3><span class="id-cell">SUBU-05</span> — Edit an existing Sub User</h3>
+        <div class="meta">Module: Sub Users &middot; Required role: Partner Administrator / Administrator / System Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Select a Sub User. Edit a field. Save.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Change is persisted.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>The only Sub User obtainable this run is a Pending invitation, whose kebab menu offers only Resend/Cancel — no Edit.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>No accepted/active Sub User exists on this account to edit, and one can&#x27;t be created without completing the magic-link acceptance flow (no inbox access).</div>
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="SUBU-06">
+        <h3><span class="id-cell">SUBU-06</span> — Disable a Sub User</h3>
+        <div class="meta">Module: Sub Users &middot; Required role: Partner Administrator / Administrator / System Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Select a Sub User. Choose Disable.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Status changes to Disabled; user can no longer log in.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Same blocker as SUBU-05 — requires an accepted Sub User, none available.</div>
+        
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="SUBU-07">
+        <h3><span class="id-cell">SUBU-07</span> — Delete a Sub User preserves their prior tickets</h3>
+        <div class="meta">Module: Sub Users &middot; Required role: Partner Administrator / Administrator / System Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Delete a Sub User with existing tickets. Check Tickets view.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>User is removed; their previously submitted tickets remain intact.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Same blocker as SUBU-05/06 — requires an accepted Sub User with prior ticket history.</div>
+        
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="SUBU-08">
+        <h3><span class="id-cell">SUBU-08</span> — Sub User can only interact with tickets for their Associated Teams</h3>
+        <div class="meta">Module: Sub Users &middot; Required role: Sub User</div>
+
+        <div class="field-label">Steps</div>
+        <div>Log in as a Sub User assigned to Team A only. Attempt to view/interact with a Team B ticket.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Team B tickets are not visible or actionable.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Out of scope — requires a Sub User role login, not provided this run.</div>
+        
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge na">N/A</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="PROF-01">
+        <h3><span class="id-cell">PROF-01</span> — View own User Profile (read-only)</h3>
+        <div class="meta">Module: Profiles &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Navigate to own Profile.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Name, Email, Role, Account creation date, Last login display; fields are not editable from this view.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>&quot;Account information&quot; shows Name, Email, Role, Account created, Last sign in as plain static text — nothing editable.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Matches spec exactly.</div>
+        
+        <div class="media">
+          <img src="evidence/PROF-01_02_03_04_06.gif" alt="PROF-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="PROF-02">
+        <h3><span class="id-cell">PROF-02</span> — View a Team Profile</h3>
+        <div class="meta">Module: Profiles &middot; Required role: Any role with Team access</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open a Team Profile for a Team the user has access to.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Team Information and Additional Details sections display per spec.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>&quot;Team profile&quot; modal shows Team Information, Team contacts, and Additional Details sections, matching spec.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/PROF-01_02_03_04_06.gif" alt="PROF-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="PROF-03">
+        <h3><span class="id-cell">PROF-03</span> — Team Name is editable only by Admin or System Admin</h3>
+        <div class="meta">Module: Profiles &middot; Required role: Administrator / System Administrator vs. others</div>
+
+        <div class="field-label">Steps</div>
+        <div>As Admin/System Admin, edit Team Name — should succeed. As Partner Admin/Sub User, attempt the same — should be blocked or read-only.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Only Admin/System Admin can change Team Name.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Team name renders as plain static text for this Partner Administrator — confirmed blocked/read-only.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Admin/System Administrator side (should be editable) unconfirmed — needs a second account.</div>
+        
+        <div class="media">
+          <img src="evidence/PROF-01_02_03_04_06.gif" alt="PROF-03 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="PROF-04">
+        <h3><span class="id-cell">PROF-04</span> — Tier 1 Support Contact editable only by Admin or System Admin</h3>
+        <div class="meta">Module: Profiles &middot; Required role: Administrator / System Administrator vs. others</div>
+
+        <div class="field-label">Steps</div>
+        <div>Attempt to edit Tier 1 Support Contact as each role.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Only Admin/System Admin succeed; other roles see it read-only.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Tier 1 support shows &quot;No contacts&quot; with no Add/Edit affordance for this Partner Administrator (contrast with Additional contacts, which does have an Add button).</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Admin/System Administrator side unconfirmed.</div>
+        
+        <div class="media">
+          <img src="evidence/PROF-01_02_03_04_06.gif" alt="PROF-04 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="PROF-05">
+        <h3><span class="id-cell">PROF-05</span> — Additional Team Contacts editable by Partner Admin, Admin, or System Admin</h3>
+        <div class="meta">Module: Profiles &middot; Required role: Partner Administrator / Administrator / System Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Attempt to add/edit/delete an Additional Team Contact as each of these roles, and as a plain Sub User.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>The three named roles can edit; Sub User cannot.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Already demonstrated directly via TEAM-05/TEAM-06 — Partner Administrator successfully added Additional Team Contacts.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Admin/System Admin and Sub User sides unconfirmed — need other-role accounts.</div>
+        
+        <div class="media">
+          <img src="evidence/TEAM-05_TEAM-06.gif" alt="PROF-05 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="PROF-06">
+        <h3><span class="id-cell">PROF-06</span> — &quot;Additional Details&quot; fields (HID, Domain, Server Location, etc.) editable only by Admin or System Admin</h3>
+        <div class="meta">Module: Profiles &middot; Required role: Administrator / System Administrator vs. others</div>
+
+        <div class="field-label">Steps</div>
+        <div>Attempt to edit an Additional Details field as each role.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Only Admin/System Admin succeed.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>All Additional Details fields (Domain, Team tag/ID, Server location, Cluster, Support type, WebHostOS URL, Portal URL, Webmail URL, Service Manager) render as plain static text.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Confirms blocked/read-only for Partner Administrator. Admin/System Administrator side unconfirmed.</div>
+        
+        <div class="media">
+          <img src="evidence/PROF-01_02_03_04_06.gif" alt="PROF-06 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="PROF-07">
+        <h3><span class="id-cell">PROF-07</span> — Adding a contact without an email is rejected on the Team Profile</h3>
+        <div class="meta">Module: Profiles &middot; Required role: Any role permitted to add contacts</div>
+
+        <div class="field-label">Steps</div>
+        <div>Attempt to add a contact with no Email value.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Save is blocked until Email is provided.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Already demonstrated directly via TEAM-05 — Save contact stayed disabled without an Email value.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/TEAM-05_TEAM-06.gif" alt="PROF-07 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="PROF-08">
+        <h3><span class="id-cell">PROF-08</span> — Sub User can view a Team Profile only if part of that Team</h3>
+        <div class="meta">Module: Profiles &middot; Required role: Sub User</div>
+
+        <div class="field-label">Steps</div>
+        <div>Log in as a Sub User on Team A. Attempt to view Team B&#x27;s profile.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Team B profile is not accessible.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Out of scope — requires a Sub User role login, not provided this run.</div>
+        
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge na">N/A</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="PROF-09">
+        <h3><span class="id-cell">PROF-09</span> — Edits made in the profile view reflect back in the source data and vice versa</h3>
+        <div class="meta">Module: Profiles &middot; Required role: Administrator / System Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Edit a field from the Team Profile view; then check the same field from wherever it&#x27;s set at creation/management level (and reverse).</div>
+
+        <div class="field-label">Expected result</div>
+        <div>The two stay in sync in both directions.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Out of scope — requires an Administrator/System Administrator login, not provided this run.</div>
+        
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge na">N/A</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-01">
+        <h3><span class="id-cell">TICK-01</span> — Tickets table renders all documented columns</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Navigate to Tickets view.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Ticket ID, Subject, Impacted Account, External Reference ID, Category, Subcategory, Team, Submitter, Source, Created Date, Status all display.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Full table supports ID, Support ID, Subject, Impacted Account, Category, Sub Category, Status, Source, Submitted By, Alternate Contact Email, External Reference, Opened, Updated, Closed — but no &quot;Team&quot; column exists anywhere, default or hideable.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>FINDING: Team data does exist (visible on the ticket detail page as &quot;Partner / Team&quot;) but isn&#x27;t exposed as a list-view column, contrary to spec.</div>
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-02">
+        <h3><span class="id-cell">TICK-02</span> — Search from the main Tickets view</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Enter a search term matching an existing ticket&#x27;s subject/field.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Matching ticket(s) appear; non-matching tickets are filtered out.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Searching &quot;Bingo is down&quot; correctly returned only the matching ticket.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-03">
+        <h3><span class="id-cell">TICK-03</span> — Search within ticket content</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Search using a term that only appears inside a ticket&#x27;s message body.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>That ticket is returned by the search.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Searching a unique token (&quot;ZEBRAFISH42&quot;) that exists only inside a ticket&#x27;s description body correctly returned that ticket.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Confirms search indexes message/description content, not just Subject.</div>
+        
+        <div class="media">
+          <img src="evidence/TICK-03.gif" alt="TICK-03 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-04">
+        <h3><span class="id-cell">TICK-04</span> — Tickets default-sort newest to oldest by creation date</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open Tickets view with no sort applied.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>List order is newest created ticket first.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Ticket list consistently ordered newest-first with no sort applied.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-04 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-05">
+        <h3><span class="id-cell">TICK-05</span> — Add/remove columns from the Tickets table view</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Use column configuration to hide a column, then re-add it.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Column visibility updates accordingly and persists as expected.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Toggling the &quot;External Reference&quot; column on via Columns picker worked immediately and showed real data.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-05 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-06">
+        <h3><span class="id-cell">TICK-06</span> — Filter Tickets table by a column value</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Apply a filter on one column (e.g. Status = Open).</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Only matching rows display.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Filtering Status = Open correctly narrowed the table to only matching tickets.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-06 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-07">
+        <h3><span class="id-cell">TICK-07</span> — System Admin/Admin have full ticket access across all partners</h3>
+        <div class="meta">Module: Tickets &middot; Required role: System Administrator / Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Log in and browse tickets across multiple partners/teams.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>All tickets are visible and actionable.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Out of scope — requires System Administrator/Administrator login.</div>
+        
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge na">N/A</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-08">
+        <h3><span class="id-cell">TICK-08</span> — Partner Admin sees full access only for their associated Team(s)</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Log in as Partner Admin. Attempt to view a ticket outside associated Teams.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Out-of-scope tickets are not visible.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>BigCorp has only one Team (A-Team); every visible ticket belongs to it.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>No out-of-scope (different-Team) ticket exists to confirm is hidden. Needs a multi-team partner and a Partner Admin scoped to only one Team.</div>
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-09">
+        <h3><span class="id-cell">TICK-09</span> — Subuser (View Only) has read-only ticket access</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Sub User — View Only</div>
+
+        <div class="field-label">Steps</div>
+        <div>Log in as a View-Only Sub User. Open a ticket for an associated Team and attempt to reply/close/escalate.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Ticket content is visible; interactive actions (reply, close, escalate) are unavailable.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Out of scope — requires a Sub User (View Only) login.</div>
+        
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge na">N/A</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-10">
+        <h3><span class="id-cell">TICK-10</span> — Subuser (Interactive) has full interaction on associated Teams</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Sub User — Interactive</div>
+
+        <div class="field-label">Steps</div>
+        <div>Log in as an Interactive Sub User. Reply to a ticket for an associated Team.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Reply succeeds.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Out of scope — requires a Sub User (Interactive) login.</div>
+        
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge na">N/A</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-11">
+        <h3><span class="id-cell">TICK-11</span> — Create a ticket with all required fields</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-creating role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open New Ticket. Fill Subject, Category+Subcategory, Impacted Account, Description, Team. Submit.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Ticket is created and appears in Tickets view with Status Open.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Created ticket #62 with Subject, Category+Subcategory, Impacted Account, Description, Team; appeared immediately with Status Open.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-11 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-12">
+        <h3><span class="id-cell">TICK-12</span> — Create a ticket using optional fields</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-creating role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Fill Email Ticket Updates To, External Reference ID, and attach a file. Submit.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Ticket saves with optional values and the attachment is present.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Set Email Ticket Updates To, External Reference ID, and an attachment on the same ticket; all three optional values saved correctly.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-12 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-13">
+        <h3><span class="id-cell">TICK-13</span> — Escalate checkbox on New Ticket only shows for users with escalation permission</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Compare a user with/without Ability to Escalate</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open New Ticket as a user without escalation permission, then as one with it.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Checkbox is absent for the former, present for the latter.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>This account has Ability to Escalate = Yes, and the Escalate checkbox was present in the New Ticket modal, consistent with that setting.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>The negative case (checkbox absent for a non-escalating user) needs a second account.</div>
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-13 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-14">
+        <h3><span class="id-cell">TICK-14</span> — Submitter field is auto-populated and non-editable on ticket creation</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-creating role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open New Ticket and inspect the Submitter field.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Field shows the logged-in user automatically and cannot be changed.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Submitter field showed the logged-in user as plain static text; clicking produced no input.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-14 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-15">
+        <h3><span class="id-cell">TICK-15</span> — Creating a ticket with a required field missing is blocked</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-creating role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open New Ticket. Leave Subject (or another required field) blank. Attempt to submit.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Submission is blocked with a clear indication of the missing field.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>With Subject/Impacted Account blank, &quot;Create ticket&quot; rendered disabled; no ticket was created.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-15 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-16">
+        <h3><span class="id-cell">TICK-16</span> — Reply to an open ticket using the rich text editor with an attachment</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any interactive ticket role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open an Open-status ticket. Compose a reply with formatting and an attached file. Send.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Reply posts with formatting intact and the attachment included.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Reply combining plain text, a Bold-formatted segment, and a file attachment posted correctly with formatting and attachment intact.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>First attempt was silently swallowed by a stale toast notification blocking the Send button; reloading the page cleared it before a successful retry. Worth a human spot-check that toasts always auto-dismiss and never block the control beneath them.</div>
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-16 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-17">
+        <h3><span class="id-cell">TICK-17</span> — Reply is prefixed with &quot;Submitted By: [PH user name]&quot;</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any interactive ticket role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Send a reply on a ticket. Inspect how it appears (from the Dixa/agent side, or in the message thread if visible).</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Message is prepended with a Submitted By line naming the Partner Hub user.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>The reply shows &quot;Submitted By: chickhicks@bigcorp.com&quot; as a separate metadata field, not as literal prepended text inside the message body itself.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Whether the Dixa/agent side sees the message body itself prepended with a &quot;Submitted By:&quot; line can&#x27;t be confirmed without access to the Dixa side.</div>
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-17 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-18">
+        <h3><span class="id-cell">TICK-18</span> — Closed or Notified tickets are read-only with a Re-open option</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open a ticket in Closed or Notified status. Attempt to reply normally.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Normal reply is unavailable; a Re-open button is present instead.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>No ticket in the environment reached Closed or Notified status this run.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Sending a Close message did not immediately flip status — Partner Hub shows &quot;Your close message was sent. The support team will review it...&quot; and status stayed Open through the session. Closing depends on asynchronous Dixa-side processing outside this session&#x27;s control.</div>
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-19">
+        <h3><span class="id-cell">TICK-19</span> — Re-opening a ticket requires an accompanying message</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any interactive ticket role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Click Re-open on a Closed/Notified ticket without entering a message.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Re-open is blocked until a message is provided; providing one completes the re-open.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Same blocker as TICK-18 — no ticket reached Closed/Notified status, so Re-open was never available to test.</div>
+        
+        
+        <div class="media"><div class="no-evidence">No recording — see notes.</div></div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-20">
+        <h3><span class="id-cell">TICK-20</span> — Closing a ticket requires an accompanying message</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any interactive ticket role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Click Close on an open-type ticket without entering a message.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Close is blocked until a message is provided.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>&quot;Close Ticket&quot; modal&#x27;s confirm button stayed disabled until a message was entered; submitting sent the close request successfully.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Status change itself is asynchronous (see TICK-18).</div>
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-20 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-21">
+        <h3><span class="id-cell">TICK-21</span> — Escalating a ticket requires an accompanying message, and the button only appears for eligible statuses</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any interactive ticket role with escalation permission</div>
+
+        <div class="field-label">Steps</div>
+        <div>On a ticket in Open/In Progress/Pending Reply/Notified status, click Escalate without a message; then with one. Also check a Closed ticket for the button&#x27;s absence.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Escalate is blocked without a message; button is not shown on Closed tickets.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Escalate modal&#x27;s confirm button stayed disabled until a message was entered; submitting with a message succeeded immediately, changing status to &quot;Escalation&quot; right away.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Message-required behavior confirmed. Button-absence-on-Closed-tickets not verifiable this run (see TICK-18 — no Closed ticket exists).</div>
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-21 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-22">
+        <h3><span class="id-cell">TICK-22</span> — Attachments on messages are viewable/downloadable</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open a ticket with a message that has an attachment. Open/download it.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Attachment opens or downloads successfully.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Clicking the attachment link opened a new tab that immediately downloaded the file and auto-closed.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Standard browser download behavior, confirming the attachment is retrievable.</div>
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-22 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="TICK-23">
+        <h3><span class="id-cell">TICK-23</span> — Inbound/outbound messages are labeled Submitter vs Agent</h3>
+        <div class="meta">Module: Tickets &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open a ticket thread with at least one message each direction.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Inbound shows as Submitter, outbound shows as Agent.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Every message observed across all four tickets this run is labeled &quot;Submitter,&quot; consistent with all of them originating from this Partner Administrator account.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>No message from an actual Dixa agent exists in this environment, so the &quot;Agent&quot; label could not be observed. Submitter-side labeling confirmed correct.</div>
+        
+        <div class="media">
+          <img src="evidence/TICK-01-through-23_part1.gif" alt="TICK-23 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Test case definitions: <a href="../../data/test-cases.csv">data/test-cases.csv</a>
+    </footer>
+  </div>
+</body>
+</html>

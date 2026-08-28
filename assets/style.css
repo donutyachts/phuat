@@ -10,6 +10,7 @@
   --partial: #f0b429;
   --pending: #5c6470;
   --na: #3a3f4b;
+  --cannot-verify: #9aa4b2;
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -165,6 +166,7 @@ tr:last-child td { border-bottom: none; }
 .badge.partial { background: rgba(240,180,41,0.15); color: var(--partial); }
 .badge.pending { background: rgba(92,100,112,0.2); color: var(--text-dim); }
 .badge.na { background: rgba(58,63,75,0.4); color: var(--text-dim); }
+.badge.cannot-verify { background: rgba(154,164,178,0.15); color: var(--cannot-verify); border: 1px dashed rgba(154,164,178,0.4); }
 
 .id-cell { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; color: var(--accent); }
 
@@ -214,4 +216,44 @@ footer {
   max-width: 100%;
   border-radius: 8px;
   border: 1px solid var(--panel-border);
+}
+
+.evidence-card .no-evidence {
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.run-history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.run-history-list li {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.run-history-list a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+.run-history-list a:hover { text-decoration: underline; }
+
+.run-history-list .run-counts {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
 }

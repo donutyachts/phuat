@@ -1,0 +1,13 @@
+[
+  {
+    "date": "2026-08-28",
+    "login": "chickhicks@bigcorp.com (Partner Administrator, BigCorp / A-Team)",
+    "executed": 44,
+    "pass": 20,
+    "fail": 0,
+    "partial": 9,
+    "cannot_verify": 9,
+    "na": 6,
+    "path": "runs/2026-08-28/index.html"
+  }
+]

@@ -3,6 +3,26 @@ async function loadTestCases() {
   return res.json();
 }
 
+async function loadRuns() {
+  try {
+    const res = await fetch("data/runs.json");
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
+}
+
+async function loadLatestStatus() {
+  try {
+    const res = await fetch("data/latest-status.json");
+    if (!res.ok) return {};
+    return res.json();
+  } catch {
+    return {};
+  }
+}
+
 function statCard(value, label) {
   const el = document.createElement("div");
   el.className = "stat-card";
@@ -22,7 +42,13 @@ function executableBadge(value) {
   return badge("N/A", "na");
 }
 
-function renderStats(cases) {
+function statusBadge(latestStatus, id) {
+  const entry = latestStatus[id];
+  if (!entry) return badge("Not yet run", "pending");
+  return badge(entry.label, entry.result);
+}
+
+function renderStats(cases, runs) {
   const grid = document.getElementById("stat-grid");
   const total = cases.length;
   const inScope = cases.filter((c) => c["In Scope (Current Run)"] === "Yes").length;
@@ -35,8 +61,41 @@ function renderStats(cases) {
     statCard(inScope, "In scope this run"),
     statCard(execYes + execPartial, "Executable this run"),
     statCard(modules, "Modules covered"),
-    statCard(0, "Runs completed")
+    statCard(runs.length, "Runs completed")
   );
+}
+
+function renderRunHistory(runs) {
+  const section = document.getElementById("run-history");
+  if (!runs.length) {
+    section.innerHTML = `<div class="empty-state">
+      No runs completed yet. Once a test pass is executed, each run will get its own dated page
+      linked here, and this section will show a test case &times; run-date matrix so regressions
+      (passed last time, fails now) are visible at a glance.
+    </div>`;
+    return;
+  }
+
+  const items = runs
+    .slice()
+    .reverse()
+    .map((r) => {
+      const counts = `
+        <span class="run-counts">
+          ${badge(`${r.pass} pass`, "pass")}
+          ${r.partial ? badge(`${r.partial} partial`, "partial") : ""}
+          ${r.fail ? badge(`${r.fail} fail`, "fail") : ""}
+          ${r.cannot_verify ? badge(`${r.cannot_verify} cannot verify`, "cannot-verify") : ""}
+          ${r.na ? badge(`${r.na} n/a`, "na") : ""}
+        </span>`;
+      return `<li>
+        <div><a href="${r.path}">${r.date}</a> &middot; ${r.executed} addressed</div>
+        ${counts}
+      </li>`;
+    })
+    .join("");
+
+  section.innerHTML = `<ul class="run-history-list">${items}</ul>`;
 }
 
 function renderFilters(cases) {
@@ -66,7 +125,7 @@ function matchesFilters(c) {
   return true;
 }
 
-function renderTable(cases) {
+function renderTable(cases, latestStatus) {
   const tbody = document.getElementById("case-body");
   tbody.innerHTML = "";
   const filtered = cases.filter(matchesFilters);
@@ -80,20 +139,26 @@ function renderTable(cases) {
       <td>${c["Feature/Action"]}</td>
       <td>${c["Required Role"]}</td>
       <td>${executableBadge(c["Executable (Partner Admin Login)"])}</td>
-      <td>${badge("Not yet run", "pending")}</td>
+      <td>${statusBadge(latestStatus, c.ID)}</td>
     `;
     tbody.appendChild(tr);
   }
 }
 
 async function init() {
-  const cases = await loadTestCases();
-  renderStats(cases);
+  const [cases, runs, latestStatus] = await Promise.all([
+    loadTestCases(),
+    loadRuns(),
+    loadLatestStatus(),
+  ]);
+
+  renderStats(cases, runs);
+  renderRunHistory(runs);
   renderFilters(cases);
-  renderTable(cases);
+  renderTable(cases, latestStatus);
 
   ["filter-module", "filter-scope", "filter-exec", "filter-search"].forEach((id) => {
-    document.getElementById(id).addEventListener("input", () => renderTable(cases));
+    document.getElementById(id).addEventListener("input", () => renderTable(cases, latestStatus));
   });
 }
 
