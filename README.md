@@ -14,6 +14,9 @@ Deployed as a plain static site (no build step) via Cloudflare Pages.
   node scripts/build-data.mjs
   ```
 - `data/test-cases.json` — generated from the CSV, do not hand-edit.
+- `data/runs.json` — run-level summary stats (one entry per executed pass), drives the dashboard's
+  "Run history" section.
+- `data/latest-status.json` — latest result per test case ID, drives the dashboard's "Status" column.
 - `assets/` — shared CSS/JS for the dashboard.
 - `template/report-template.html` — reusable per-run report layout; see comments inside for how
   to start a new run.
@@ -22,6 +25,14 @@ Deployed as a plain static site (no build step) via Cloudflare Pages.
 
 ## Status
 
-Test case library is built and scoped (37 of 96 cases executable this run against a single
-Partner Administrator login). No test runs have been executed yet — that requires an active,
-manually-authenticated Partner Hub session (magic-link auth), which happens outside this repo.
+Test case library is built and scoped (37 of 96 cases executable against a single Partner
+Administrator login). One test run completed so far:
+
+- **2026-08-28** — 44 cases addressed (Teams, Categories, Sub Users, Profiles, Tickets):
+  20 pass, 0 fail, 9 partial, 9 cannot verify, 6 N/A. Full detail and evidence in
+  [`runs/2026-08-28/index.html`](runs/2026-08-28/index.html). Login used: a single Partner
+  Administrator account (BigCorp / A-Team) — cases requiring other roles or a multi-Team
+  partner are marked N/A or cannot verify, not failed.
+
+Remaining scope (Administrator/System Administrator and Sub User role logins, multi-Team
+partners) still needs additional accounts to exercise.
