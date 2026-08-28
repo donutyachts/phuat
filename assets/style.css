@@ -1,17 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Roboto:wght@400;500&display=swap');
+
 :root {
-  --bg: #0f1115;
-  --panel: #171a21;
-  --panel-border: #262b36;
-  --text: #e6e9ef;
-  --text-dim: #9aa4b2;
-  --accent: #5b8cff;
-  --pass: #3ecf8e;
+  /* HostPapa brand palette */
+  --bg: #182C3A;       /* Deep Navy */
+  --panel: #18214D;    /* Royal Navy */
+  --panel-border: #4A5868; /* Grey 600 */
+  --text: #F4F6F8;     /* Grey 50 */
+  --text-dim: #8896A6; /* Grey 400 */
+  --accent: #1FB3AF;   /* Teal — links, interactive elements */
+  --cta: #A5BE00;      /* Lime Green — reserved for primary actions/highlights */
+  --pass: #A5BE00;
   --fail: #ef5b5b;
   --partial: #f0b429;
-  --pending: #5c6470;
-  --na: #3a3f4b;
-  --cannot-verify: #9aa4b2;
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --pending: #8896A6;
+  --na: #4A5868;
+  --cannot-verify: #8896A6;
+  --font-display: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font: var(--font-body);
 }
 
 * { box-sizing: border-box; }
@@ -42,7 +48,9 @@ header.site-header {
 }
 
 header.site-header h1 {
-  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.75rem;
   margin: 0;
 }
 
@@ -74,8 +82,9 @@ nav.crumbs a:hover { text-decoration: underline; }
 }
 
 .stat-card .value {
+  font-family: var(--font-display);
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .stat-card .label {
@@ -90,7 +99,9 @@ section {
 }
 
 section h2 {
-  font-size: 1.05rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
   margin: 0 0 0.75rem;
   color: var(--text);
 }
@@ -161,12 +172,12 @@ tr:last-child td { border-bottom: none; }
   white-space: nowrap;
 }
 
-.badge.pass { background: rgba(62,207,142,0.15); color: var(--pass); }
+.badge.pass { background: rgba(165,190,0,0.18); color: var(--pass); }
 .badge.fail { background: rgba(239,91,91,0.15); color: var(--fail); }
 .badge.partial { background: rgba(240,180,41,0.15); color: var(--partial); }
-.badge.pending { background: rgba(92,100,112,0.2); color: var(--text-dim); }
-.badge.na { background: rgba(58,63,75,0.4); color: var(--text-dim); }
-.badge.cannot-verify { background: rgba(154,164,178,0.15); color: var(--cannot-verify); border: 1px dashed rgba(154,164,178,0.4); }
+.badge.pending { background: rgba(136,150,166,0.2); color: var(--text-dim); }
+.badge.na { background: rgba(74,88,104,0.35); color: var(--text-dim); }
+.badge.cannot-verify { background: rgba(136,150,166,0.15); color: var(--cannot-verify); border: 1px dashed rgba(136,150,166,0.4); }
 
 .id-cell { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; color: var(--accent); }
 
@@ -187,8 +198,10 @@ footer {
 }
 
 .evidence-card h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
   margin: 0 0 0.35rem;
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 .evidence-card .meta {
