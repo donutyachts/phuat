@@ -1,0 +1,73 @@
+<!--
+  Run report template.
+
+  To start a new run:
+  1. Copy this file to runs/YYYY-MM-DD/index.html (use the date the run was executed).
+  2. Create runs/YYYY-MM-DD/evidence/ and drop each test case's GIF (and optional
+     screenshot) in there, named by test case ID, e.g. SUBU-01.gif, SUBU-01.png.
+  3. Duplicate the .evidence-card block below once per executed test case, filling in
+     the ID, feature, steps, expected result, actual result, and pass/fail/partial badge.
+  4. Update the summary stat-grid counts at the top.
+  5. Add this run to the "Run history" section of ../../index.html once published.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Partner Hub QA — Run YYYY-MM-DD</title>
+  <link rel="stylesheet" href="../../assets/style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div>
+        <h1>Run — YYYY-MM-DD</h1>
+        <div class="subtitle">Partner Hub build/version: <em>fill in</em></div>
+      </div>
+    </header>
+
+    <nav class="crumbs"><a href="../../index.html">&larr; All runs</a></nav>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="value">37</div><div class="label">Executed</div></div>
+      <div class="stat-card"><div class="value">0</div><div class="label">Passed</div></div>
+      <div class="stat-card"><div class="value">0</div><div class="label">Failed</div></div>
+      <div class="stat-card"><div class="value">0</div><div class="label">Partial</div></div>
+    </div>
+
+    <section>
+      <h2>Test case evidence</h2>
+
+      <!-- Duplicate this card per executed test case -->
+      <div class="evidence-card">
+        <h3><span class="id-cell">SUBU-01</span> — View Sub Users table renders all documented fields</h3>
+        <div class="meta">Module: Sub Users · Required role: System Administrator / Administrator / Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Expand a Partner row to view Sub Users.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Table shows Name, Email, Requester ID, Role, Access Type, Status, Ability to Escalate, Last Active, Actions.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Fill in what was observed.</div>
+
+        <div class="media">
+          <img src="evidence/SUBU-01.gif" alt="SUBU-01 recording" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+          <!-- swap for: <span class="badge fail">Fail</span> or <span class="badge partial">Partial</span> -->
+        </div>
+      </div>
+
+    </section>
+
+    <footer>
+      Test case definitions: <a href="../../data/test-cases.csv">data/test-cases.csv</a>
+    </footer>
+  </div>
+</body>
+</html>

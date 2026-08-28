@@ -1,0 +1,217 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel-border: #262b36;
+  --text: #e6e9ef;
+  --text-dim: #9aa4b2;
+  --accent: #5b8cff;
+  --pass: #3ecf8e;
+  --fail: #ef5b5b;
+  --partial: #f0b429;
+  --pending: #5c6470;
+  --na: #3a3f4b;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.5;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+header.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 1.25rem;
+}
+
+header.site-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+header.site-header .subtitle {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+nav.crumbs {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+}
+nav.crumbs a { color: var(--accent); text-decoration: none; }
+nav.crumbs a:hover { text-decoration: underline; }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.stat-card .value {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.stat-card .label {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+section {
+  margin-bottom: 2.5rem;
+}
+
+section h2 {
+  font-size: 1.05rem;
+  margin: 0 0 0.75rem;
+  color: var(--text);
+}
+
+.empty-state {
+  background: var(--panel);
+  border: 1px dashed var(--panel-border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.filters select, .filters input {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+table.scroll-wrap { display: block; overflow-x: auto; }
+
+th, td {
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--panel-border);
+  vertical-align: top;
+}
+
+th {
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+}
+
+tr:last-child td { border-bottom: none; }
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge.pass { background: rgba(62,207,142,0.15); color: var(--pass); }
+.badge.fail { background: rgba(239,91,91,0.15); color: var(--fail); }
+.badge.partial { background: rgba(240,180,41,0.15); color: var(--partial); }
+.badge.pending { background: rgba(92,100,112,0.2); color: var(--text-dim); }
+.badge.na { background: rgba(58,63,75,0.4); color: var(--text-dim); }
+
+.id-cell { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; color: var(--accent); }
+
+footer {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--panel-border);
+  padding-top: 1rem;
+  margin-top: 3rem;
+}
+
+.evidence-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.evidence-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.evidence-card .meta {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.evidence-card .field-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
+  margin-top: 0.6rem;
+}
+
+.evidence-card .media {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.evidence-card .media img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+}

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Partner Hub QA</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div>
+        <h1>Partner Hub QA</h1>
+        <div class="subtitle">Spec-based functional test tracking — not a security audit</div>
+      </div>
+      <div class="subtitle">Test case library v1 · 96 cases</div>
+    </header>
+
+    <div class="stat-grid" id="stat-grid"></div>
+
+    <section>
+      <h2>Run history</h2>
+      <div class="empty-state">
+        No runs completed yet. Once a test pass is executed, each run will get its own dated page
+        linked here, and this section will show a test case × run-date matrix so regressions
+        (passed last time, fails now) are visible at a glance.
+      </div>
+    </section>
+
+    <section>
+      <h2>Test case library</h2>
+      <div class="filters">
+        <input id="filter-search" type="search" placeholder="Search ID or feature…" />
+        <select id="filter-module">
+          <option value="">All modules</option>
+        </select>
+        <select id="filter-scope">
+          <option value="">All scope</option>
+          <option value="Yes">In scope this run</option>
+          <option value="No">Out of scope this run</option>
+        </select>
+        <select id="filter-exec">
+          <option value="">All executability</option>
+          <option value="Yes">Executable</option>
+          <option value="Partial">Partial</option>
+          <option value="No">Not executable</option>
+          <option value="N/A">N/A</option>
+        </select>
+        <span id="case-count" class="subtitle"></span>
+      </div>
+      <table class="scroll-wrap">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Module</th>
+            <th>Feature / Action</th>
+            <th>Required Role</th>
+            <th>Executable</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="case-body"></tbody>
+      </table>
+    </section>
+
+    <footer>
+      Source of truth: <code>data/test-cases.csv</code>. Regenerate <code>data/test-cases.json</code>
+      with <code>node scripts/build-data.mjs</code> after editing the CSV.
+    </footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
