@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Partner Hub QA — Usability Run 2026-08-28</title>
+  <link rel="stylesheet" href="../../assets/style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div>
+        <h1><span class="badge type-badge type-usability">Usability</span> Run — 2026-08-28</h1>
+        <div class="subtitle">Login used: chickhicks@bigcorp.com (Partner Administrator, BigCorp / A-Team)</div>
+      </div>
+    </header>
+
+    <nav class="crumbs"><a href="../../index.html">&larr; All runs</a></nav>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="value">28</div><div class="label">Addressed</div></div>
+      <div class="stat-card"><div class="value">16</div><div class="label">Passed</div></div>
+      <div class="stat-card"><div class="value">3</div><div class="label">Failed</div></div>
+      <div class="stat-card"><div class="value">5</div><div class="label">Partial</div></div>
+      <div class="stat-card"><div class="value">4</div><div class="label">Cannot verify</div></div>
+      <div class="stat-card"><div class="value">0</div><div class="label">N/A this run</div></div>
+    </div>
+
+    <section>
+      <div class="empty-state" style="margin-bottom:1.5rem;">
+        <strong>Scope note:</strong> this is a heuristic usability evaluation (Nielsen's 10
+        usability heuristics + WCAG 2.1 AA) against a single Partner Administrator login
+        (BigCorp / A-Team, the only Team this partner has) — not a security audit. All 28
+        usability checks in <a href="../../data/usability-cases.csv">the usability case
+        library</a> were addressed this run. "Cannot verify" means the environment or login
+        this run couldn't exercise that case (e.g. it needs a second role, a second Team, or
+        a support-agent reply that doesn't exist in this environment) — it is not a failure.
+      </div>
+    </section>
+
+    <section>
+      <h2>Test case evidence</h2>
+
+      <div class="evidence-card" id="UX-GLOB-01">
+        <h3><span class="id-cell">UX-GLOB-01</span> — Modal action buttons use consistent labels/order/placement across create and edit modals</h3>
+        <div class="meta">Module: Global &middot; Heuristic: Consistency and standards &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open New Sub User, New Ticket, and an Edit flow (e.g. edit a Team Contact). Compare button labels, order, and position.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Primary action (Save/Create) and secondary action (Cancel/Close) use the same wording order and position across every modal.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Compared button labels/order/placement across New ticket, Invite User, and Edit Team Contact: every modal uses a secondary action (Cancel) immediately left of a primary green action on the right (Create ticket / Send Invitation / Save contact).</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Edit Team Contact also shows a red Delete button further to the left, separated from the Cancel/Save pair — a common, deliberate pattern for isolating destructive actions, not an inconsistency.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-GLOB-01.gif" alt="UX-GLOB-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-GLOB-02">
+        <h3><span class="id-cell">UX-GLOB-02</span> — Save/submit actions show a loading or in-progress state</h3>
+        <div class="meta">Module: Global &middot; Heuristic: Visibility of system status &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Trigger a save with a noticeable network delay (e.g. create Sub User submit a ticket reply) and observe the button/UI during the request.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Button shows a busy/loading state between click and completion; UI does not appear frozen or allow duplicate submits.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Clicking Create ticket while the form was valid showed a spinner icon inside the button and disabled the form fields until the request completed.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Note for testers: the button also LOOKS dimmed/disabled when a required field (Category) is missing, which can be mistaken for a loading state — worth a moment&#x27;s care when reproducing this check.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-GLOB-02_03.gif" alt="UX-GLOB-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-GLOB-03">
+        <h3><span class="id-cell">UX-GLOB-03</span> — Successful save/create/edit actions show a clear confirmation</h3>
+        <div class="meta">Module: Global &middot; Heuristic: Visibility of system status &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Complete a create/edit/disable/delete action anywhere in scope.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>A toast, banner, or equivalent confirmation appears; the affected item updates in the underlying table/view without a manual refresh.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Editing a Team Contact&#x27;s phone number and saving showed a &#x27;Contact updated.&#x27; toast, and the updated value appeared in the list immediately with no manual refresh. Creating a ticket also added it to the top of the Tickets table immediately.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/UX-GLOB-02_03.gif" alt="UX-GLOB-03 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-GLOB-04">
+        <h3><span class="id-cell">UX-GLOB-04</span> — Modals can be dismissed without side effects</h3>
+        <div class="meta">Module: Global &middot; Heuristic: User control and freedom &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open a creation modal, partially fill it, then close via each available method (Cancel, X icon, Escape key, click outside).</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Every dismissal method closes the modal without saving partial data or leaving the view in a broken/loading state.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Partially filled the New ticket modal&#x27;s Subject field, then closed it four ways in turn (X icon, Escape key, Cancel button, click outside the modal). All four closed cleanly with no draft ticket created and no broken/loading state left behind.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/UX-GLOB-04.gif" alt="UX-GLOB-04 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-GLOB-05">
+        <h3><span class="id-cell">UX-GLOB-05</span> — Multi-select fields show currently selected values without requiring recall</h3>
+        <div class="meta">Module: Global &middot; Heuristic: Recognition rather than recall &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open Edit on an item with multiple selections already made (e.g. a Sub User with 2+ Associated Teams).</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Current selections are visibly listed/checked in the field itself not just inferable by reopening a dropdown.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>No Sub User with multiple Associated Teams exists to inspect on Edit — BigCorp has only one Team (A-Team) and only the logged-in Partner Administrator&#x27;s own account exists in Users; no accepted Sub User account is available.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Same environment constraint noted functionally in SUBU-03/04/05. Needs a multi-Team partner with an accepted Sub User assigned to 2+ Teams.</div>
+        
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-GLOB-06">
+        <h3><span class="id-cell">UX-GLOB-06</span> — Tables show only the information needed for the primary task</h3>
+        <div class="meta">Module: Global &middot; Heuristic: Aesthetic and minimalist design &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open the Tickets table and Sub Users table with default columns.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Default columns cover fields needed to scan/triage at a glance; secondary fields are available via column config or detail view, not cluttering the default view.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Tickets table&#x27;s default columns (ID, Support ID, Subject, Impacted Account, Category, Sub Category, Status, Source, Submitted By, Opened, plus more off-screen) require horizontal scrolling even at a wide (1536px) viewport. Users table default columns (Name, Email, Role, Status, Last Login, Created) fit without scrolling and look appropriately minimal.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>FINDING: the Tickets table&#x27;s default column set is dense enough to force horizontal scroll on a full-width desktop view, working against scan-at-a-glance triage; Support ID/Source/Submitted By could arguably be hideable-by-default rather than shown up front.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-GLOB-05_06.gif" alt="UX-GLOB-06 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-A11Y-01">
+        <h3><span class="id-cell">UX-A11Y-01</span> — Primary flows are fully operable by keyboard alone</h3>
+        <div class="meta">Module: Accessibility &middot; Heuristic: WCAG 2.1 AA - Keyboard operability &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Using only Tab/Shift+Tab/Enter/Space/Escape (no mouse), open a creation modal, fill required fields, submit; also navigate a data table.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Every interactive element is reachable and operable via keyboard, with a visible focus indicator at each step.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Keyboard-only walkthrough of New ticket: Subject, Impacted account, Category, and Subcategory are all fully operable by Tab/Enter/Arrow keys with a visible focus ring — but Tab skips over the Description rich-text field entirely, landing directly on its Bold toolbar button instead. Typed text while that toolbar button is focused is silently discarded (never appears in the field).</div>
+        
+        <div class="field-label">Notes</div>
+        <div>FINDING: a keyboard-only user cannot enter a ticket Description at all via Tab navigation — the contenteditable area is missing from the tab order. Table row links ARE reachable and Enter-activatable (opened ticket #63 successfully), so the failure is isolated to the rich-text editor, not the whole flow.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-A11Y-01.gif" alt="UX-A11Y-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge fail">Fail</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-A11Y-02">
+        <h3><span class="id-cell">UX-A11Y-02</span> — Form fields have visible associated labels and validation errors are shown as text near the field</h3>
+        <div class="meta">Module: Accessibility &middot; Heuristic: WCAG 2.1 AA - Labels and error identification &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open a creation form and trigger a validation error (leave a required field blank submit).</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Each field has a persistent visible label (not placeholder-only); the error is shown as text near the field, not conveyed by color/border alone.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Every field observed (Email, Subject, Category, etc.) has a persistent visible label, not placeholder-only. Submitting Invite User with a blank Email produced a toast reading &#x27;The email field is required.&#x27; — but submitting with a malformed email (no @) produced no visible error at all (no toast, no inline text, no red border).</div>
+        
+        <div class="field-label">Notes</div>
+        <div>FINDING: required-field errors surface as a global toast rather than text near the field itself, and format-invalid input fails silently with zero feedback — a screen reader user or anyone who missed the toast has no way to know why the form didn&#x27;t submit.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-A11Y-02_03_04.gif" alt="UX-A11Y-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-A11Y-03">
+        <h3><span class="id-cell">UX-A11Y-03</span> — Status values are distinguishable without relying on color alone</h3>
+        <div class="meta">Module: Accessibility &middot; Heuristic: WCAG 2.1 AA - Use of color &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>View a table with status badges/colors (e.g. Sub Users Status column Tickets Status column).</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Status is also conveyed via text/icon/shape, not color alone.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Every status value observed (Users table &#x27;Active&#x27;/&#x27;Interactive&#x27;/&#x27;You&#x27; pills, Tickets table &#x27;Open&#x27;/&#x27;Escalation&#x27; plain text, ticket detail page status badge) always carries a text label alongside any color, never color alone.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/UX-A11Y-02_03_04.gif" alt="UX-A11Y-03 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-A11Y-04">
+        <h3><span class="id-cell">UX-A11Y-04</span> — Focus indicator is visible on all interactive elements</h3>
+        <div class="meta">Module: Accessibility &middot; Heuristic: WCAG 2.1 AA - Focus visible &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Tab through a form and a table&#x27;s row actions.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>A clearly visible focus outline/highlight appears on the currently focused element at every step.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Nav links, header buttons (Refresh, Team profile, etc.) and form fields show a strong, high-contrast focus ring when tabbed to. The Tickets table&#x27;s row link (ticket subject) also receives focus, but its indicator is a thin, low-contrast outline that&#x27;s easy to miss against the white background.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>FINDING: focus visibility is inconsistent in contrast/strength between chrome (nav/buttons) and table row content.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-A11Y-02_03_04.gif" alt="UX-A11Y-04 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-TEAM-01">
+        <h3><span class="id-cell">UX-TEAM-01</span> — Team Profile terminology matches how support/ops staff refer to these concepts</h3>
+        <div class="meta">Module: Teams &middot; Heuristic: Match between system and the real world &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open a Team Profile and review field labels and section names.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Labels use terminology consistent with the spec/business language; no internal codenames or ambiguous abbreviations exposed to the user.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Team Profile&#x27;s field/section labels (Team name, Team contacts, Tier 1 support, Additional contacts, Additional details, Domain, Team tag / ID, Server location, Cluster, Support type, Service Manager) all use clear business language, not internal codenames or cryptic abbreviations.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>&quot;Hostopia support&quot; references the underlying platform brand rather than an internal codename; this is presumably intentional (matches CAT/spec naming) rather than a leak.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-TEAM-01_02_03.gif" alt="UX-TEAM-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-TEAM-02">
+        <h3><span class="id-cell">UX-TEAM-02</span> — Read-only fields blocked for Partner Administrator clearly indicate why they can&#x27;t be edited</h3>
+        <div class="meta">Module: Teams &middot; Heuristic: Help users recognize/diagnose/recover from errors &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>As Partner Administrator, attempt to edit Team Name or an Additional Details field on a Team Profile.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>The field is clearly shown as read-only/disabled (not silently rejecting a click) and ideally indicates who can edit it.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Clicking on the read-only Team name and Team tag / ID values produced zero feedback: no cursor change, no tooltip, no lock icon, no disabled styling, and no message anywhere about who can edit them.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>FINDING: a Partner Administrator has no way to tell, from the UI alone, whether these fields are permanently fixed or just not editable by their role — nothing distinguishes them from any other static text on the page.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-TEAM-01_02_03.gif" alt="UX-TEAM-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge fail">Fail</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-TEAM-03">
+        <h3><span class="id-cell">UX-TEAM-03</span> — Adding a Team Contact without an email is flagged before submit not just on save</h3>
+        <div class="meta">Module: Teams &middot; Heuristic: Error prevention &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>While adding an Additional Team Contact fill Name/Phone and leave Email blank; observe the form before clicking submit.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>The missing-email state is flagged inline (disabled submit or inline hint) rather than only surfacing after a failed save attempt.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Filling Name and Phone on a new Additional contact while leaving Email blank kept &#x27;Save contact&#x27; visibly disabled (dimmed) before any submit attempt was made.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Satisfies the spec&#x27;s &#x27;disabled submit OR inline hint&#x27; bar, but no asterisk or inline hint text marks Email as required up front — the only signal is the button&#x27;s dim color, which is subtle (same issue noted in UX-GLOB-02).</div>
+        
+        <div class="media">
+          <img src="evidence/UX-TEAM-01_02_03.gif" alt="UX-TEAM-03 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-SUBU-01">
+        <h3><span class="id-cell">UX-SUBU-01</span> — Sub Users table reflects a newly created/edited/disabled user immediately</h3>
+        <div class="meta">Module: Sub Users &middot; Heuristic: Visibility of system status &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Create edit or disable a Sub User and return to the Sub Users table.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>The table shows the change immediately without a manual page refresh.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Sending an invite immediately bumped the &#x27;Invitations&#x27; counter (0 to 1) and showed the new row with no manual refresh; cancelling it immediately dropped the counter back to 0 and removed the row, both confirmed by toasts (&#x27;Invitation sent&#x27; / &#x27;Invitation ... cancelled&#x27;).</div>
+        
+        
+        <div class="media">
+          <img src="evidence/UX-SUBU-01_02_03_04.gif" alt="UX-SUBU-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-SUBU-02">
+        <h3><span class="id-cell">UX-SUBU-02</span> — Associated Teams field is searchable/filterable rather than requiring scrolling a long list</h3>
+        <div class="meta">Module: Sub Users &middot; Heuristic: Recognition rather than recall &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open New Sub User and interact with the Associated Teams selector.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>If the Teams list is long, the field supports typing to filter; note actual list length observed if short.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>The Invite User modal&#x27;s Teams field is a static, non-interactive box reading &#x27;This User is already a member of every Team for this Partner&#x27; because BigCorp has only one Team — there&#x27;s no real selector to test searchability on.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Same single-Team environment constraint as SUBU-03/04 (functional run). Needs a multi-Team partner to see the actual Teams selector.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-SUBU-01_02_03_04.gif" alt="UX-SUBU-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-SUBU-03">
+        <h3><span class="id-cell">UX-SUBU-03</span> — Sub User create and edit forms use the same field order labels and layout</h3>
+        <div class="meta">Module: Sub Users &middot; Heuristic: Consistency and standards &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open New Sub User then open Edit on an existing Sub User; compare the two forms.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Fields appear in the same order with the same labels and controls in both create and edit contexts.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>No &#x27;edit&#x27; form exists to compare against the invite form — the only Sub User obtainable this run is a Pending invitation, whose kebab menu offers only Resend/Cancel invitation, no Edit.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Same blocker as functional SUBU-05/06/07 — requires an accepted Sub User account.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-SUBU-01_02_03_04.gif" alt="UX-SUBU-03 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-SUBU-04">
+        <h3><span class="id-cell">UX-SUBU-04</span> — Sub Users table can be searched/filtered without leaving the Partner&#x27;s expanded view</h3>
+        <div class="meta">Module: Sub Users &middot; Heuristic: Flexibility and efficiency of use &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Expand a Partner with several Sub Users and attempt to locate one by name/email.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>A search or filter control is available directly on the Sub Users table not only on a separate global view.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Both the Invitations table and the main Users table each have their own dedicated Search box and filter control directly above them — no extra navigation or &#x27;expanding&#x27; needed to search/filter Sub Users.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>This BigCorp account has no partner-expansion concept to test literally (single partner, single Team), but the underlying requirement — search/filter available without leaving the table&#x27;s context — is met.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-SUBU-01_02_03_04.gif" alt="UX-SUBU-04 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-CAT-01">
+        <h3><span class="id-cell">UX-CAT-01</span> — Auto-filled Description template is presented as editable starting text not locked or ambiguous</h3>
+        <div class="meta">Module: Categories &middot; Heuristic: Help and documentation &middot; Required role: Any ticket-creating role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Select a Category/Subcategory with an associated template in New Ticket and inspect the Description field.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>It is visually clear the field is pre-filled but still editable (not read-only not indistinguishable from placeholder text).</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Selected Category=Hosting/Subcategory=Migration in New ticket; the auto-filled Description template appeared in the same solid black text as normal input. Clicked into it, pressed End, and typed additional text directly after the template — the appended text rendered identically (same color/weight, live cursor, spellcheck underline) with no separate &#x27;placeholder&#x27; styling anywhere.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Reconfirms functional CAT-06 (auto-fill works) and additionally verifies the field is unambiguously live/editable, not a locked or placeholder-styled block.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-CAT-01_02.gif" alt="UX-CAT-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-CAT-02">
+        <h3><span class="id-cell">UX-CAT-02</span> — A Partner Administrator blocked from Category Management gets a clear reason not a dead link</h3>
+        <div class="meta">Module: Categories &middot; Heuristic: Help users recognize/diagnose/recover from errors &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>As Partner Administrator, attempt to reach Category Management (via nav or URL if discoverable).</div>
+
+        <div class="field-label">Expected result</div>
+        <div>User sees a clear not-permitted state (or the option is simply absent from navigation) rather than a broken/blank page.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>No Category Management entry appears anywhere in top-level nav (Tickets, Reports, Teams, Users, Team profile, account menu) for the Partner Administrator. Guessing the direct URL /categories returned a clean, on-brand styled 404 page (large &#x27;404 | NOT FOUND&#x27; text on the app&#x27;s background) rather than a blank white page or a broken/crashed view.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Reconfirms functional CAT-07 (no access) and confirms the failure mode is a clean 404, not a dead/broken page — satisfies the spec&#x27;s bar even though it&#x27;s a generic 404 rather than a bespoke &#x27;not permitted&#x27; message.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-CAT-01_02.gif" alt="UX-CAT-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-PROF-01">
+        <h3><span class="id-cell">UX-PROF-01</span> — Saving an edit on a Team Profile confirms success and shows the updated value without navigating away</h3>
+        <div class="meta">Module: Profiles &middot; Heuristic: Visibility of system status &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Edit an Additional Team Contact from the Team Profile view and save.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>A confirmation appears and the updated value is visible on the same screen immediately.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Edited John Backup&#x27;s phone via Teams &gt; (kebab menu) &gt; Team contacts: a &#x27;Contact updated.&#x27; toast appeared and the new number showed immediately in that same modal. But the separate read-only &#x27;Team profile&#x27; view (opened from the top nav) kept showing the OLD phone number until the page was fully reloaded — the two views of the same underlying contact did not stay in sync without a manual refresh.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>FINDING: two issues beyond the original test intent. (1) There is no Edit control anywhere in the top-nav &#x27;Team profile&#x27; view itself — editing an Additional Contact actually requires a different entry point (Teams list &gt; row kebab menu &gt; &#x27;Team contacts&#x27;), which is not discoverable from the profile view. (2) That separate profile view has a stale-data/cache-invalidation gap: it does not reflect a contact edit made elsewhere until reloaded, contradicting the immediate-update behavior confirmed elsewhere (UX-GLOB-03).</div>
+        
+        <div class="media">
+          <img src="evidence/UX-PROF-01_02_03.gif" alt="UX-PROF-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-PROF-02">
+        <h3><span class="id-cell">UX-PROF-02</span> — Team Profile data matches what&#x27;s shown elsewhere with consistent field naming</h3>
+        <div class="meta">Module: Profiles &middot; Heuristic: Consistency and standards &middot; Required role: Any</div>
+
+        <div class="field-label">Steps</div>
+        <div>Compare a field&#x27;s label and value on the Team Profile view against the same underlying data shown elsewhere (e.g. Sub Users table ticket Team column).</div>
+
+        <div class="field-label">Expected result</div>
+        <div>The same underlying field uses the same name and displays the same value across every view it appears in.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Compared the Team name/tag value &#x27;A-Team&#x27; across three views: Team profile (&#x27;Team name: A-Team&#x27;), the Teams admin list (&#x27;Name&#x27; column: A-Team), and a ticket detail page (&#x27;Partner / Team: BigCorp / A-Team&#x27;). The underlying value is identical everywhere, and every label is a clear, recognizable variant of &#x27;Team&#x27; (no unrelated or cryptic naming).</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Label wording isn&#x27;t verbatim-identical across views (&quot;Team name&quot; vs &quot;Name&quot; vs &quot;Partner / Team&quot;), but each is unambiguous and contextually appropriate for its screen — not treated as an inconsistency.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-PROF-01_02_03.gif" alt="UX-PROF-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-PROF-03">
+        <h3><span class="id-cell">UX-PROF-03</span> — Adding a contact without an Email on the Team Profile view is blocked with the same clarity as elsewhere</h3>
+        <div class="meta">Module: Profiles &middot; Heuristic: Error prevention &middot; Required role: Partner Administrator</div>
+
+        <div class="field-label">Steps</div>
+        <div>Attempt to add a Team Profile contact with no Email, same check as UX-TEAM-03 from the Profile entry point.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Behavior and messaging match the Team-creation-flow equivalent - no inconsistency between entry points for the same rule.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>In the &#x27;Team contacts&#x27; New contact form (the actual Profile-adjacent contact-adding entry point), filled Name and Phone and left Email blank: &#x27;Save contact&#x27; remained visibly dimmed/disabled before any submit attempt, identical to the behavior already confirmed in UX-TEAM-03.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Same subtle-dimming-only signal noted in UX-TEAM-03/UX-GLOB-02 (no inline hint or asterisk) — behavior is consistent between entry points, which is what this check targets.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-PROF-01_02_03.gif" alt="UX-PROF-03 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-TICK-01">
+        <h3><span class="id-cell">UX-TICK-01</span> — Sending a ticket reply shows a sending/pending state and confirms once posted</h3>
+        <div class="meta">Module: Tickets &middot; Heuristic: Visibility of system status &middot; Required role: Any interactive ticket role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Reply to a ticket and observe the UI between clicking Send and the reply appearing in the thread.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>A pending/sending indicator appears; the new reply is visible in the thread immediately on success without a manual refresh.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Sent a reply on ticket #62: a &#x27;Your message was sent.&#x27; toast confirmed success and the reply appeared in the thread immediately with no manual refresh. However, the round trip completed faster than could be reliably screenshotted, so a transient sending/pending indicator on the Send button itself could not be directly observed or confirmed either way in two attempts.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>The success-confirmation half of this check clearly passes (matches UX-GLOB-03&#x27;s immediate-update pattern). The pending-state half is CANNOT_VERIFY by observation rather than a finding of absence — staging responded too quickly to catch an intermediate state with screenshot-based testing.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-TICK-01_02_03.gif" alt="UX-TICK-01 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge partial">Partial</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-TICK-02">
+        <h3><span class="id-cell">UX-TICK-02</span> — A ticket reply in progress can be safely abandoned without silently losing a long draft</h3>
+        <div class="meta">Module: Tickets &middot; Heuristic: User control and freedom &middot; Required role: Any interactive ticket role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Start composing a lengthy reply, then navigate away or close the compose area.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>The user is warned before losing unsaved reply content, or the draft is preserved if they return.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Typed a long, clearly-substantial draft reply into the compose box on ticket #62, then navigated away to the Tickets list without sending. No confirmation/warning dialog appeared. Returning to ticket #62 afterward showed the compose box completely empty — the draft was silently and permanently lost.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>FINDING: there is no unsaved-changes warning and no draft persistence for ticket replies; a lengthy in-progress reply can be lost with a single accidental click/navigation and no recovery path.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-TICK-01_02_03.gif" alt="UX-TICK-02 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge fail">Fail</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-TICK-03">
+        <h3><span class="id-cell">UX-TICK-03</span> — The Close/Escalate/Re-open message-required rule is signaled before the user clicks the action</h3>
+        <div class="meta">Module: Tickets &middot; Heuristic: Error prevention &middot; Required role: Any interactive ticket role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open Close or Escalate on a ticket and observe the button/field state with no message typed yet.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>The requirement is visible up front (disabled button with a hint or inline note) rather than only surfacing after a failed click.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Opened &#x27;Close Ticket&#x27; on a ticket with no message typed yet: the modal immediately showed the sentence &#x27;A message is required and will be sent to the support team with this action.&#x27; directly under the title, and the &#x27;Close Ticket&#x27; submit button was already visibly dimmed/disabled before any text was entered.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Exceeds the spec&#x27;s bar (disabled button OR inline hint) by providing both simultaneously — the clearest requirement-communication seen in this run.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-TICK-01_02_03.gif" alt="UX-TICK-03 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-TICK-04">
+        <h3><span class="id-cell">UX-TICK-04</span> — Active filters remain visible on the Tickets table so the user can see what&#x27;s currently filtered</h3>
+        <div class="meta">Module: Tickets &middot; Heuristic: Recognition rather than recall &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Apply a filter (e.g. Status = Open) to the Tickets table.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>An active filter is shown as a visible chip/label near the table distinguishing filtered results from the full list at a glance.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Applied a Status = Open filter to the Tickets table via &#x27;Add filter&#x27;. A &#x27;Status: Open&#x27; chip (with its own × remove control) plus a &#x27;Clear all&#x27; link appeared directly above the table immediately, and the table correctly narrowed to only the 2 Open tickets.</div>
+        
+        
+        <div class="media">
+          <img src="evidence/UX-TICK-04_05_06.gif" alt="UX-TICK-04 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-TICK-05">
+        <h3><span class="id-cell">UX-TICK-05</span> — Common ticket actions are reachable without excessive navigation depth</h3>
+        <div class="meta">Module: Tickets &middot; Heuristic: Flexibility and efficiency of use &middot; Required role: Any interactive ticket role</div>
+
+        <div class="field-label">Steps</div>
+        <div>From the Tickets table open a ticket and locate the primary interactive actions.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Reply/Close/Escalate are reachable within one click/screen from the open ticket view, not buried in a secondary menu.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Opened a short ticket (#63): Reply (compose box), Close Ticket, and Escalate were all visible on the single initial screen with no scrolling and no secondary/kebab menu needed.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>On a ticket with a much longer thread (#62, 5+ messages) reaching the same controls required scrolling past the whole thread, but the controls themselves are still on the same page/screen, not buried in a separate menu — satisfies the letter of this check, though very long threads make the actions less immediately reachable (related to the scroll behavior noted under UX-TICK-01/02).</div>
+        
+        <div class="media">
+          <img src="evidence/UX-TICK-04_05_06.gif" alt="UX-TICK-05 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge pass">Pass</span>
+        </div>
+      </div>
+      <div class="evidence-card" id="UX-TICK-06">
+        <h3><span class="id-cell">UX-TICK-06</span> — Ticket thread visually distinguishes Submitter vs Agent messages beyond the text label alone</h3>
+        <div class="meta">Module: Tickets &middot; Heuristic: Aesthetic and minimalist design &middot; Required role: Any ticket-viewing role</div>
+
+        <div class="field-label">Steps</div>
+        <div>Open a ticket thread with messages from both directions.</div>
+
+        <div class="field-label">Expected result</div>
+        <div>Submitter and Agent messages are visually differentiated (alignment, color, avatar) in addition to the text label, aiding fast scanning.</div>
+
+        <div class="field-label">Actual result</div>
+        <div>Checked all 5 existing tickets (#59-#63): every message in every thread is authored by &#x27;Submitter&#x27; (chickhicks@bigcorp.com, the only account in this environment). No Agent-authored message exists anywhere to compare against.</div>
+        
+        <div class="field-label">Notes</div>
+        <div>Same single-account environment constraint as UX-GLOB-05/UX-SUBU-02/03 — needs a support-agent reply (from a role/account this environment doesn&#x27;t have) to evaluate visual differentiation between Submitter and Agent messages.</div>
+        
+        <div class="media">
+          <img src="evidence/UX-TICK-04_05_06.gif" alt="UX-TICK-06 recording" loading="lazy" />
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <span class="badge cannot-verify">Cannot verify</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Test case definitions: <a href="../../data/usability-cases.csv">data/usability-cases.csv</a>
+    </footer>
+  </div>
+</body>
+</html>

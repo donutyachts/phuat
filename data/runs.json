@@ -10,5 +10,17 @@
     "cannot_verify": 9,
     "na": 6,
     "path": "runs/2026-08-28/index.html"
+  },
+  {
+    "date": "2026-08-28",
+    "type": "usability",
+    "login": "chickhicks@bigcorp.com (Partner Administrator, BigCorp / A-Team)",
+    "executed": 28,
+    "pass": 16,
+    "fail": 3,
+    "partial": 5,
+    "cannot_verify": 4,
+    "na": 0,
+    "path": "runs/2026-08-28-usability/index.html"
   }
 ]

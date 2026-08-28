@@ -218,5 +218,145 @@
     "result": "partial",
     "label": "Partial",
     "run": "2026-08-28"
+  },
+  "UX-GLOB-01": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-GLOB-02": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-GLOB-03": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-GLOB-04": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-GLOB-05": {
+    "result": "cannot-verify",
+    "label": "Cannot verify",
+    "run": "2026-08-28"
+  },
+  "UX-GLOB-06": {
+    "result": "partial",
+    "label": "Partial",
+    "run": "2026-08-28"
+  },
+  "UX-A11Y-01": {
+    "result": "fail",
+    "label": "Fail",
+    "run": "2026-08-28"
+  },
+  "UX-A11Y-02": {
+    "result": "partial",
+    "label": "Partial",
+    "run": "2026-08-28"
+  },
+  "UX-A11Y-03": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-A11Y-04": {
+    "result": "partial",
+    "label": "Partial",
+    "run": "2026-08-28"
+  },
+  "UX-TEAM-01": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-TEAM-02": {
+    "result": "fail",
+    "label": "Fail",
+    "run": "2026-08-28"
+  },
+  "UX-TEAM-03": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-SUBU-01": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-SUBU-02": {
+    "result": "cannot-verify",
+    "label": "Cannot verify",
+    "run": "2026-08-28"
+  },
+  "UX-SUBU-03": {
+    "result": "cannot-verify",
+    "label": "Cannot verify",
+    "run": "2026-08-28"
+  },
+  "UX-SUBU-04": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-CAT-01": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-CAT-02": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-PROF-01": {
+    "result": "partial",
+    "label": "Partial",
+    "run": "2026-08-28"
+  },
+  "UX-PROF-02": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-PROF-03": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-TICK-01": {
+    "result": "partial",
+    "label": "Partial",
+    "run": "2026-08-28"
+  },
+  "UX-TICK-02": {
+    "result": "fail",
+    "label": "Fail",
+    "run": "2026-08-28"
+  },
+  "UX-TICK-03": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-TICK-04": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-TICK-05": {
+    "result": "pass",
+    "label": "Pass",
+    "run": "2026-08-28"
+  },
+  "UX-TICK-06": {
+    "result": "cannot-verify",
+    "label": "Cannot verify",
+    "run": "2026-08-28"
   }
 }
