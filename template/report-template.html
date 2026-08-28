@@ -1,14 +1,19 @@
 <!--
-  Run report template.
+  Run report template. Works for both functional and usability runs — the evidence-card
+  shape (steps, expected/actual, media, badge) is the same either way.
 
   To start a new run:
-  1. Copy this file to runs/YYYY-MM-DD/index.html (use the date the run was executed).
+  1. Copy this file to runs/YYYY-MM-DD/index.html (use the date the run was executed; if a
+     functional and a usability run happen on the same date, suffix the folder, e.g.
+     runs/YYYY-MM-DD-usability/).
   2. Create runs/YYYY-MM-DD/evidence/ and drop each test case's GIF (and optional
-     screenshot) in there, named by test case ID, e.g. SUBU-01.gif, SUBU-01.png.
-  3. Duplicate the .evidence-card block below once per executed test case, filling in
+     screenshot) in there, named by test case ID, e.g. SUBU-01.gif, UX-TICK-01.gif.
+  3. Set the type badge in the <h1> below to type-functional or type-usability.
+  4. Duplicate the .evidence-card block below once per executed test case, filling in
      the ID, feature, steps, expected result, actual result, and pass/fail/partial badge.
-  4. Update the summary stat-grid counts at the top.
-  5. Add this run to the "Run history" section of ../../index.html once published.
+  5. Update the summary stat-grid counts at the top.
+  6. Add this run to data/runs.json (with a "type" field) and, once results are in, add each
+     test case's outcome to data/latest-status.json — both drive the dashboard at ../../index.html.
 -->
 <!doctype html>
 <html lang="en">
@@ -22,7 +27,7 @@
   <div class="page">
     <header class="site-header">
       <div>
-        <h1>Run — YYYY-MM-DD</h1>
+        <h1><span class="badge type-badge type-functional">Functional</span> Run — YYYY-MM-DD</h1>
         <div class="subtitle">Partner Hub build/version: <em>fill in</em></div>
       </div>
     </header>
@@ -66,7 +71,8 @@
     </section>
 
     <footer>
-      Test case definitions: <a href="../../data/test-cases.csv">data/test-cases.csv</a>
+      Test case definitions: <a href="../../data/test-cases.csv">data/test-cases.csv</a> (functional) ·
+      <a href="../../data/usability-cases.csv">data/usability-cases.csv</a> (usability)
     </footer>
   </div>
 </body>

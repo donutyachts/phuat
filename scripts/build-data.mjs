@@ -1,13 +1,17 @@
 #!/usr/bin/env node
-// Regenerates data/test-cases.json from data/test-cases.csv.
-// Run after editing the CSV: node scripts/build-data.mjs
+// Regenerates data/*.json from data/*.csv.
+// Run after editing either CSV: node scripts/build-data.mjs
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const csvPath = path.join(__dirname, "..", "data", "test-cases.csv");
-const jsonPath = path.join(__dirname, "..", "data", "test-cases.json");
+const dataDir = path.join(__dirname, "..", "data");
+
+const SOURCES = [
+  { csv: "test-cases.csv", json: "test-cases.json" },
+  { csv: "usability-cases.csv", json: "usability-cases.json" },
+];
 
 function parseCsv(text) {
   const rows = [];
@@ -49,16 +53,19 @@ function parseCsv(text) {
   return rows;
 }
 
-const raw = readFileSync(csvPath, "utf8");
-const rows = parseCsv(raw);
-const header = rows[0];
-const records = rows.slice(1).map((r) => {
-  const rec = {};
-  header.forEach((key, idx) => {
-    rec[key] = r[idx] ?? "";
+for (const { csv, json } of SOURCES) {
+  const csvPath = path.join(dataDir, csv);
+  const jsonPath = path.join(dataDir, json);
+  const raw = readFileSync(csvPath, "utf8");
+  const rows = parseCsv(raw);
+  const header = rows[0];
+  const records = rows.slice(1).map((r) => {
+    const rec = {};
+    header.forEach((key, idx) => {
+      rec[key] = r[idx] ?? "";
+    });
+    return rec;
   });
-  return rec;
-});
-
-writeFileSync(jsonPath, JSON.stringify(records, null, 2) + "\n");
-console.log(`Wrote ${records.length} test cases to ${path.relative(process.cwd(), jsonPath)}`);
+  writeFileSync(jsonPath, JSON.stringify(records, null, 2) + "\n");
+  console.log(`Wrote ${records.length} records to ${path.relative(process.cwd(), jsonPath)}`);
+}

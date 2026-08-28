@@ -115,6 +115,48 @@ section h2 {
   font-size: 0.9rem;
 }
 
+.tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.tab {
+  font-family: var(--font-body);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  color: var(--text-dim);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tab .tab-count {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+}
+
+.tab.active {
+  background: rgba(31,179,175,0.15);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.tab.active .tab-count { color: var(--accent); }
+
+.hidden { display: none !important; }
+
+.badge.type-badge {
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.03em;
+}
+.badge.type-functional { background: rgba(31,179,175,0.15); color: var(--accent); }
+.badge.type-usability { background: rgba(165,190,0,0.18); color: var(--pass); }
+
 .filters {
   display: flex;
   flex-wrap: wrap;

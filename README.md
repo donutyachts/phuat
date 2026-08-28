@@ -1,38 +1,45 @@
 # Partner Hub QA
 
-Spec-based functional test tracking site for Partner Hub. This is functional/UI testing,
-not a security audit — see `HANDOFF.md` context (not committed here) for full background.
+Test tracking site for Partner Hub, covering two check types:
+
+- **Functional** — spec-based functional/UI testing. Not a security audit — see `HANDOFF.md`
+  context (not committed here) for full background.
+- **Usability** — heuristic evaluation against [Nielsen's 10 usability heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/)
+  plus WCAG 2.1 AA, scoped to the modules already exercised functionally (Teams, Sub Users,
+  Categories, Profiles, Tickets).
 
 Deployed as a plain static site (no build step) via Cloudflare Pages.
 
 ## Structure
 
-- `index.html` — dashboard: summary stats, run history, filterable test case library.
-- `data/test-cases.csv` — source of truth test case library (96 cases, 11 modules). Edit this,
-  then regenerate the JSON consumed by the site:
+- `index.html` — dashboard: summary stats, unified run history (both check types), and a
+  filterable test case library with a Functional / Usability tab switch.
+- `data/test-cases.csv` — functional test case library (96 cases, 11 modules).
+- `data/usability-cases.csv` — usability check library (28 checks: global/cross-cutting,
+  accessibility/WCAG, and per-module heuristic checks).
+- Edit either CSV, then regenerate both JSON files the site consumes:
   ```
   node scripts/build-data.mjs
   ```
-- `data/test-cases.json` — generated from the CSV, do not hand-edit.
-- `data/runs.json` — run-level summary stats (one entry per executed pass), drives the dashboard's
-  "Run history" section.
-- `data/latest-status.json` — latest result per test case ID, drives the dashboard's "Status" column.
+- `data/test-cases.json` / `data/usability-cases.json` — generated from the CSVs above, do not
+  hand-edit.
+- `data/runs.json` — one entry per executed pass (either type, tagged `"type"`), drives the
+  dashboard's "Run history" section.
+- `data/latest-status.json` — latest result per check ID (functional and usability IDs share
+  this file — prefixes don't collide), drives the dashboard's "Status" column.
 - `assets/` — shared CSS/JS for the dashboard.
-- `template/report-template.html` — reusable per-run report layout; see comments inside for how
-  to start a new run.
+- `template/report-template.html` — reusable per-run report layout, usable for either check
+  type; see comments inside for how to start a new run.
 - `runs/` — one dated folder per executed test pass, each with its own report page and evidence
   (GIFs/screenshots). See `runs/README.md`.
 
 ## Status
 
-Test case library is built and scoped (37 of 96 cases executable against a single Partner
-Administrator login). One test run completed so far:
-
-- **2026-08-28** — 44 cases addressed (Teams, Categories, Sub Users, Profiles, Tickets):
-  20 pass, 0 fail, 9 partial, 9 cannot verify, 6 N/A. Full detail and evidence in
+- **Functional**: 37 of 96 cases executable against a single Partner Administrator login. One
+  run completed — **2026-08-28**, 44 cases addressed (Teams, Categories, Sub Users, Profiles,
+  Tickets): 20 pass, 0 fail, 9 partial, 9 cannot verify, 6 N/A. Full detail and evidence in
   [`runs/2026-08-28/index.html`](runs/2026-08-28/index.html). Login used: a single Partner
-  Administrator account (BigCorp / A-Team) — cases requiring other roles or a multi-Team
-  partner are marked N/A or cannot verify, not failed.
-
-Remaining scope (Administrator/System Administrator and Sub User role logins, multi-Team
-partners) still needs additional accounts to exercise.
+  Administrator account (BigCorp / A-Team) — cases requiring other roles or a multi-Team partner
+  are marked N/A or cannot verify, not failed. Remaining scope (Administrator/System
+  Administrator and Sub User role logins, multi-Team partners) still needs additional accounts.
+- **Usability**: 28 checks defined, not yet run.

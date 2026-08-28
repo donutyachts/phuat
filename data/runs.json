@@ -1,6 +1,7 @@
 [
   {
     "date": "2026-08-28",
+    "type": "functional",
     "login": "chickhicks@bigcorp.com (Partner Administrator, BigCorp / A-Team)",
     "executed": 44,
     "pass": 20,

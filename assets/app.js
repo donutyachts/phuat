@@ -1,25 +1,29 @@
-async function loadTestCases() {
-  const res = await fetch("data/test-cases.json");
-  return res.json();
-}
+const TYPES = {
+  functional: {
+    label: "Functional",
+    source: "data/test-cases.json",
+    hasHeuristic: false,
+  },
+  usability: {
+    label: "Usability",
+    source: "data/usability-cases.json",
+    hasHeuristic: true,
+  },
+};
 
-async function loadRuns() {
+const state = {
+  activeType: "functional",
+  data: {},
+  latestStatus: {},
+};
+
+async function loadJson(path, fallback) {
   try {
-    const res = await fetch("data/runs.json");
-    if (!res.ok) return [];
+    const res = await fetch(path);
+    if (!res.ok) return fallback;
     return res.json();
   } catch {
-    return [];
-  }
-}
-
-async function loadLatestStatus() {
-  try {
-    const res = await fetch("data/latest-status.json");
-    if (!res.ok) return {};
-    return res.json();
-  } catch {
-    return {};
+    return fallback;
   }
 }
 
@@ -34,6 +38,12 @@ function badge(text, cls) {
   return `<span class="badge ${cls}">${text}</span>`;
 }
 
+function typeBadge(type) {
+  const cls = type === "usability" ? "type-usability" : "type-functional";
+  const label = TYPES[type]?.label ?? type;
+  return `<span class="badge type-badge ${cls}">${label}</span>`;
+}
+
 function executableBadge(value) {
   const v = (value || "").trim();
   if (v.startsWith("Yes")) return badge("Executable", "pass");
@@ -42,24 +52,22 @@ function executableBadge(value) {
   return badge("N/A", "na");
 }
 
-function statusBadge(latestStatus, id) {
-  const entry = latestStatus[id];
+function statusBadge(id) {
+  const entry = state.latestStatus[id];
   if (!entry) return badge("Not yet run", "pending");
   return badge(entry.label, entry.result);
 }
 
-function renderStats(cases, runs) {
+function renderStats(runs) {
   const grid = document.getElementById("stat-grid");
-  const total = cases.length;
-  const inScope = cases.filter((c) => c["In Scope (Current Run)"] === "Yes").length;
-  const execYes = cases.filter((c) => c["Executable (Partner Admin Login)"] === "Yes").length;
-  const execPartial = cases.filter((c) => c["Executable (Partner Admin Login)"] === "Partial").length;
-  const modules = new Set(cases.map((c) => c.Module)).size;
+  grid.innerHTML = "";
+  const functional = state.data.functional || [];
+  const usability = state.data.usability || [];
+  const modules = new Set([...functional, ...usability].map((c) => c.Module)).size;
 
   grid.append(
-    statCard(total, "Total test cases"),
-    statCard(inScope, "In scope this run"),
-    statCard(execYes + execPartial, "Executable this run"),
+    statCard(functional.length, "Functional checks"),
+    statCard(usability.length, "Usability checks"),
     statCard(modules, "Modules covered"),
     statCard(runs.length, "Runs completed")
   );
@@ -89,7 +97,7 @@ function renderRunHistory(runs) {
           ${r.na ? badge(`${r.na} n/a`, "na") : ""}
         </span>`;
       return `<li>
-        <div><a href="${r.path}">${r.date}</a> &middot; ${r.executed} addressed</div>
+        <div>${typeBadge(r.type || "functional")} <a href="${r.path}">${r.date}</a> &middot; ${r.executed} addressed</div>
         ${counts}
       </li>`;
     })
@@ -98,24 +106,56 @@ function renderRunHistory(runs) {
   section.innerHTML = `<ul class="run-history-list">${items}</ul>`;
 }
 
-function renderFilters(cases) {
+function currentCases() {
+  return state.data[state.activeType] || [];
+}
+
+function renderTabs() {
+  document.querySelectorAll("#check-tabs .tab").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.type === state.activeType);
+  });
+  document.getElementById("tab-count-functional").textContent = `(${(state.data.functional || []).length})`;
+  document.getElementById("tab-count-usability").textContent = `(${(state.data.usability || []).length})`;
+  document.getElementById("filter-heuristic-wrap").classList.toggle("hidden", !TYPES[state.activeType].hasHeuristic);
+  document.getElementById("library-subtitle").textContent =
+    state.activeType === "usability" ? "Usability library — Nielsen heuristics + WCAG 2.1 AA" : "Functional test case library";
+}
+
+function renderFilterOptions() {
+  const cases = currentCases();
+
   const moduleSel = document.getElementById("filter-module");
-  const modules = [...new Set(cases.map((c) => c.Module))];
-  modules.forEach((m) => {
+  const currentModule = moduleSel.value;
+  moduleSel.innerHTML = `<option value="">All modules</option>`;
+  [...new Set(cases.map((c) => c.Module))].forEach((m) => {
     const opt = document.createElement("option");
     opt.value = m;
     opt.textContent = m;
     moduleSel.appendChild(opt);
   });
+  if ([...moduleSel.options].some((o) => o.value === currentModule)) moduleSel.value = currentModule;
+
+  const heuristicSel = document.getElementById("filter-heuristic");
+  heuristicSel.innerHTML = `<option value="">All heuristics</option>`;
+  if (TYPES[state.activeType].hasHeuristic) {
+    [...new Set(cases.map((c) => c.Heuristic))].forEach((h) => {
+      const opt = document.createElement("option");
+      opt.value = h;
+      opt.textContent = h;
+      heuristicSel.appendChild(opt);
+    });
+  }
 }
 
 function matchesFilters(c) {
   const module = document.getElementById("filter-module").value;
+  const heuristic = document.getElementById("filter-heuristic").value;
   const scope = document.getElementById("filter-scope").value;
   const exec = document.getElementById("filter-exec").value;
   const search = document.getElementById("filter-search").value.trim().toLowerCase();
 
   if (module && c.Module !== module) return false;
+  if (TYPES[state.activeType].hasHeuristic && heuristic && c.Heuristic !== heuristic) return false;
   if (scope && c["In Scope (Current Run)"] !== scope) return false;
   if (exec && !(c["Executable (Partner Admin Login)"] || "").startsWith(exec)) return false;
   if (search) {
@@ -125,40 +165,77 @@ function matchesFilters(c) {
   return true;
 }
 
-function renderTable(cases, latestStatus) {
+function renderTableHead() {
+  const thead = document.getElementById("case-head");
+  const heuristicCol = TYPES[state.activeType].hasHeuristic ? "<th>Heuristic</th>" : "";
+  thead.innerHTML = `<tr>
+    <th>ID</th>
+    <th>Module</th>
+    ${heuristicCol}
+    <th>Feature / Action</th>
+    <th>Required Role</th>
+    <th>Executable</th>
+    <th>Status</th>
+  </tr>`;
+}
+
+function renderTable() {
+  const cases = currentCases();
   const tbody = document.getElementById("case-body");
   tbody.innerHTML = "";
   const filtered = cases.filter(matchesFilters);
-  document.getElementById("case-count").textContent = `${filtered.length} of ${cases.length} test cases`;
+  document.getElementById("case-count").textContent = `${filtered.length} of ${cases.length} checks`;
 
+  const hasHeuristic = TYPES[state.activeType].hasHeuristic;
   for (const c of filtered) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td class="id-cell">${c.ID}</td>
       <td>${c.Module}</td>
+      ${hasHeuristic ? `<td>${c.Heuristic}</td>` : ""}
       <td>${c["Feature/Action"]}</td>
       <td>${c["Required Role"]}</td>
       <td>${executableBadge(c["Executable (Partner Admin Login)"])}</td>
-      <td>${statusBadge(latestStatus, c.ID)}</td>
+      <td>${statusBadge(c.ID)}</td>
     `;
     tbody.appendChild(tr);
   }
 }
 
+function renderLibrary() {
+  renderTabs();
+  renderFilterOptions();
+  renderTableHead();
+  renderTable();
+}
+
+function setActiveType(type) {
+  state.activeType = type;
+  renderLibrary();
+}
+
 async function init() {
-  const [cases, runs, latestStatus] = await Promise.all([
-    loadTestCases(),
-    loadRuns(),
-    loadLatestStatus(),
+  const [functional, usability, runs, latestStatus] = await Promise.all([
+    loadJson("data/test-cases.json", []),
+    loadJson("data/usability-cases.json", []),
+    loadJson("data/runs.json", []),
+    loadJson("data/latest-status.json", {}),
   ]);
 
-  renderStats(cases, runs);
-  renderRunHistory(runs);
-  renderFilters(cases);
-  renderTable(cases, latestStatus);
+  state.data.functional = functional;
+  state.data.usability = usability;
+  state.latestStatus = latestStatus;
 
-  ["filter-module", "filter-scope", "filter-exec", "filter-search"].forEach((id) => {
-    document.getElementById(id).addEventListener("input", () => renderTable(cases, latestStatus));
+  renderStats(runs);
+  renderRunHistory(runs);
+  renderLibrary();
+
+  document.querySelectorAll("#check-tabs .tab").forEach((btn) => {
+    btn.addEventListener("click", () => setActiveType(btn.dataset.type));
+  });
+
+  ["filter-module", "filter-heuristic", "filter-scope", "filter-exec", "filter-search"].forEach((id) => {
+    document.getElementById(id).addEventListener("input", renderTable);
   });
 }
 
